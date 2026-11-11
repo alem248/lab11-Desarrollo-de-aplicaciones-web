@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClientResponseException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
@@ -16,4 +18,10 @@ public class ApiExceptionHandler {
         return ResponseEntity.badRequest().body(errors);
     }
     @ExceptionHandler(IllegalArgumentException.class) ResponseEntity<Map<String,String>> badState(IllegalArgumentException ex) { return ResponseEntity.badRequest().body(Map.of("mensaje",ex.getMessage())); }
+    @ExceptionHandler(RestClientResponseException.class) ResponseEntity<Map<String,String>> referenceError(RestClientResponseException ex) {
+        return ResponseEntity.unprocessableEntity().body(Map.of("mensaje", "El paciente o médico indicado no existe"));
+    }
+    @ExceptionHandler(ResourceAccessException.class) ResponseEntity<Map<String,String>> serviceUnavailable(ResourceAccessException ex) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(Map.of("mensaje", "No fue posible consultar los servicios de pacientes o médicos"));
+    }
 }

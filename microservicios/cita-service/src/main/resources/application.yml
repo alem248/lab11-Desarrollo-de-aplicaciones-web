@@ -13,3 +13,6 @@ spring:
     password: ${DB_PASSWORD:}
 server:
   port: 8083
+servicios:
+  paciente-url: ${PACIENTE_SERVICE_URL:http://localhost:8081}
+  medico-url: ${MEDICO_SERVICE_URL:http://localhost:8082}

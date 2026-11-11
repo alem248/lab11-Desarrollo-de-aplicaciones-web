@@ -18,7 +18,7 @@ Se usa Spring Boot 3.5.7 con Java 21 porque es la versión instalada en el entor
 | medico-service | 8082 | bd_medico | `/api/medicos`, `/api/especialidades`, `/api/horarios` |
 | cita-service | 8083 | bd_cita | `/api/citas` |
 
-El servicio de médicos mantiene especialidades y horarios porque forman parte del modelo relacional del laboratorio. Citas registra los identificadores de paciente y médico sin acoplar las bases de datos de los servicios.
+El servicio de médicos mantiene especialidades y horarios porque forman parte del modelo relacional del laboratorio. El servicio de citas consulta por HTTP a pacientes y médicos al registrar o actualizar una cita, y conserva solo sus identificadores en su propia base de datos.
 
 ## Puesta en marcha
 
@@ -45,7 +45,7 @@ cd medico-service; mvn spring-boot:run
 cd cita-service; mvn spring-boot:run
 ```
 
-Cada servicio también incluye `application-dev.yml` y `application-prod.yml`. El perfil activo predeterminado es `dev`; se puede cambiar con `SPRING_PROFILES_ACTIVE=prod`.
+Cada servicio también incluye `application-dev.yml` y `application-prod.yml`. El perfil activo predeterminado es `dev`; se puede cambiar con `SPRING_PROFILES_ACTIVE=prod`. El servicio de citas usa `PACIENTE_SERVICE_URL` y `MEDICO_SERVICE_URL` para localizar los otros servicios.
 
 ## Ejemplos de uso
 
@@ -94,7 +94,7 @@ Content-Type: application/json
 {"estado":"CONFIRMADA"}
 ```
 
-Estados válidos: `PROGRAMADA`, `CONFIRMADA`, `ATENDIDA`, `CANCELADA`. `DELETE /api/citas/{id}` cancela la cita y conserva su registro.
+Estados válidos: `PROGRAMADA`, `CONFIRMADA`, `ATENDIDA`, `CANCELADA`. `DELETE /api/citas/{id}` cancela la cita y conserva su registro. Al crear o actualizar una cita, ambos servicios de referencia deben estar disponibles.
 
 ## Actividades cubiertas
 
