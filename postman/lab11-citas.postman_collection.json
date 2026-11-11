@@ -1,0 +1,52 @@
+{
+  "info": {
+    "name": "Lab 11 - Sistema de citas médicas",
+    "description": "Flujos CRUD para pacientes, médicos, especialidades y citas. Crear especialidad antes que médico y crear paciente/médico antes que cita.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "pacienteUrl", "value": "http://localhost:8081" },
+    { "key": "medicoUrl", "value": "http://localhost:8082" },
+    { "key": "citaUrl", "value": "http://localhost:8083" },
+    { "key": "pacienteId", "value": "1" },
+    { "key": "medicoId", "value": "1" },
+    { "key": "citaId", "value": "1" },
+    { "key": "especialidadId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Pacientes",
+      "item": [
+        { "name": "Registrar paciente", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"dni\": \"12345678\",\n  \"nombres\": \"Ana\",\n  \"apellidos\": \"Pérez Rojas\",\n  \"fechaNacimiento\": \"1990-05-12\",\n  \"sexo\": \"F\",\n  \"telefono\": \"987654321\",\n  \"direccion\": \"Lima\",\n  \"correo\": \"ana@example.com\"\n}" }, "url": "{{pacienteUrl}}/api/pacientes" } },
+        { "name": "Listar pacientes", "request": { "method": "GET", "url": "{{pacienteUrl}}/api/pacientes" } },
+        { "name": "Buscar paciente", "request": { "method": "GET", "url": "{{pacienteUrl}}/api/pacientes/{{pacienteId}}" } },
+        { "name": "Actualizar paciente", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"dni\": \"12345678\",\n  \"nombres\": \"Ana María\",\n  \"apellidos\": \"Pérez Rojas\",\n  \"fechaNacimiento\": \"1990-05-12\",\n  \"sexo\": \"F\",\n  \"telefono\": \"987654321\",\n  \"direccion\": \"Lima\",\n  \"correo\": \"ana@example.com\",\n  \"estado\": \"A\"\n}" }, "url": "{{pacienteUrl}}/api/pacientes/{{pacienteId}}" } },
+        { "name": "Eliminar paciente", "request": { "method": "DELETE", "url": "{{pacienteUrl}}/api/pacientes/{{pacienteId}}" } }
+      ]
+    },
+    {
+      "name": "Médicos y especialidades",
+      "item": [
+        { "name": "Crear especialidad", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Medicina general\",\n  \"descripcion\": \"Atención primaria\"\n}" }, "url": "{{medicoUrl}}/api/especialidades" } },
+        { "name": "Listar especialidades", "request": { "method": "GET", "url": "{{medicoUrl}}/api/especialidades" } },
+        { "name": "Registrar médico", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"cmp\": \"CMP-12345\",\n  \"nombres\": \"Luis\",\n  \"apellidos\": \"García Díaz\",\n  \"telefono\": \"912345678\",\n  \"correo\": \"luis@example.com\",\n  \"idEspecialidad\": {{especialidadId}}\n}" }, "url": "{{medicoUrl}}/api/medicos" } },
+        { "name": "Listar médicos", "request": { "method": "GET", "url": "{{medicoUrl}}/api/medicos" } },
+        { "name": "Buscar médico", "request": { "method": "GET", "url": "{{medicoUrl}}/api/medicos/{{medicoId}}" } },
+        { "name": "Actualizar médico", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"cmp\": \"CMP-12345\",\n  \"nombres\": \"Luis Alberto\",\n  \"apellidos\": \"García Díaz\",\n  \"telefono\": \"912345678\",\n  \"correo\": \"luis@example.com\",\n  \"idEspecialidad\": {{especialidadId}}\n}" }, "url": "{{medicoUrl}}/api/medicos/{{medicoId}}" } },
+        { "name": "Eliminar médico", "request": { "method": "DELETE", "url": "{{medicoUrl}}/api/medicos/{{medicoId}}" } },
+        { "name": "Crear horario médico", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"idMedico\": {{medicoId}},\n  \"diaSemana\": \"LUNES\",\n  \"horaInicio\": \"08:00:00\",\n  \"horaFin\": \"13:00:00\"\n}" }, "url": "{{medicoUrl}}/api/horarios" } }
+      ]
+    },
+    {
+      "name": "Citas",
+      "item": [
+        { "name": "Registrar cita", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fecha\": \"2026-11-20\",\n  \"hora\": \"09:30:00\",\n  \"idPaciente\": {{pacienteId}},\n  \"idMedico\": {{medicoId}},\n  \"motivo\": \"Consulta general\"\n}" }, "url": "{{citaUrl}}/api/citas" } },
+        { "name": "Listar citas", "request": { "method": "GET", "url": "{{citaUrl}}/api/citas" } },
+        { "name": "Buscar cita", "request": { "method": "GET", "url": "{{citaUrl}}/api/citas/{{citaId}}" } },
+        { "name": "Actualizar cita", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fecha\": \"2026-11-21\",\n  \"hora\": \"10:00:00\",\n  \"idPaciente\": {{pacienteId}},\n  \"idMedico\": {{medicoId}},\n  \"motivo\": \"Control\"\n}" }, "url": "{{citaUrl}}/api/citas/{{citaId}}" } },
+        { "name": "Actualizar estado de cita", "request": { "method": "PATCH", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"estado\": \"CONFIRMADA\"\n}" }, "url": "{{citaUrl}}/api/citas/{{citaId}}/estado" } },
+        { "name": "Cancelar cita", "request": { "method": "PATCH", "url": "{{citaUrl}}/api/citas/{{citaId}}/cancelar" } }
+      ]
+    }
+  ]
+}

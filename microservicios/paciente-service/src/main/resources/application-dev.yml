@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/bd_paciente?createDatabaseIfNotExist=true
+server:
+  port: 8081

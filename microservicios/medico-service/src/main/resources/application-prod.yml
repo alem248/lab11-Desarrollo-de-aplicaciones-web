@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/bd_medico}
+server:
+  port: ${SERVER_PORT:9092}
